@@ -341,15 +341,15 @@ export default function PrestigeFitnessHomepage() {
               Luxury strength training, elite coaching, and a premium atmosphere designed for serious results.
             </p>
 
-            <div className="mt-4 flex flex-col gap-2.5 sm:flex-row md:mt-6 md:gap-3">
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row md:mt-6 md:gap-3">
               <button
                 onClick={() => setCheckoutItem(memberships[1])}
-                className="rounded-full bg-red-700 px-6 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.55)] transition duration-300 hover:scale-105 hover:bg-red-600 hover:shadow-[0_0_45px_rgba(220,38,38,.85)] active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4"
+                className="rounded-full bg-red-700 px-8 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.55)] transition duration-300 hover:scale-105 hover:bg-red-600 hover:shadow-[0_0_45px_rgba(220,38,38,.85)] active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4"
               >
                 Join Now
               </button>
 
-              <button className="rounded-full border border-white/20 bg-black/50 px-6 py-3 text-xs font-bold uppercase tracking-wide text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-red-600 hover:bg-red-600/10 active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4">
+              <button className="rounded-full border border-white/20 bg-black/50 px-8 py-4 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-red-600 hover:bg-red-600/10 active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4">
                 Book A Tour
               </button>
             </div>
