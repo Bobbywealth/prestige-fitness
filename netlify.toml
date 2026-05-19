@@ -1,6 +1,6 @@
 [build]
   publish = "preview/dist"
-  command = "cd preview && npm run build"
+  command = "cd preview && npm install && npm run build"
 
 [[redirects]]
   from = "/*"
