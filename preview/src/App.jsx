@@ -316,7 +316,7 @@ export default function PrestigeFitnessHomepage() {
         />
 
         <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
         </div>
 
         <motion.div
