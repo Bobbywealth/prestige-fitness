@@ -1,0 +1,633 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2869
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Dumbbell,
+  Flame,
+  Shield,
+  Timer,
+  Users,
+  MapPin,
+  Star,
+  ShoppingCart,
+  Menu,
+  X,
+} from "lucide-react";
+
+const programs = [
+  {
+    icon: Dumbbell,
+    title: "Strength Training",
+    text: "Heavy lifting zones, elite machines, and progressive strength programming.",
+  },
+  {
+    icon: Flame,
+    title: "HIIT Conditioning",
+    text: "Explosive classes built to burn fat, increase endurance, and build discipline.",
+  },
+  {
+    icon: Shield,
+    title: "Personal Coaching",
+    text: "One-on-one training plans for serious transformations and measurable results.",
+  },
+];
+
+const merch = [
+  {
+    name: "Prestige Oversized Tee",
+    price: "$45",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    name: "PF Performance Hoodie",
+    price: "$85",
+    image:
+      "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    name: "Prestige Gym Bottle",
+    price: "$28",
+    image:
+      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1200&auto=format&fit=crop",
+  },
+];
+
+const memberships = [
+  {
+    name: "Essential",
+    price: "$49",
+    details: [
+      "24/7 Gym Access",
+      "Strength & Cardio Floor",
+      "Locker Room Access",
+      "Free WiFi",
+      "Mobile App Access",
+    ],
+  },
+  {
+    name: "Elite",
+    price: "$89",
+    featured: true,
+    details: [
+      "Unlimited Group Classes",
+      "Recovery & Stretch Zone",
+      "Sauna Access",
+      "1 Free Personal Training Session",
+      "Priority Member Events",
+    ],
+  },
+  {
+    name: "Prestige Black",
+    price: "$149",
+    details: [
+      "VIP Member Access",
+      "Unlimited Personal Coaching",
+      "Private Recovery Suite",
+      "Guest Passes Included",
+      "Exclusive Prestige Apparel Discounts",
+    ],
+  },
+];
+
+const navLinks = [
+  { label: "Home", href: "#" },
+  { label: "Programs", href: "#programs" },
+  { label: "Membership", href: "#membership" },
+  { label: "Trainers", href: "#" },
+  { label: "Contact", href: "#" },
+];
+
+function runDataChecks() {
+  console.assert(programs.length === 3, "Expected 3 training programs.");
+  console.assert(memberships.length === 3, "Expected 3 membership plans.");
+  console.assert(merch.length === 3, "Expected 3 merch products.");
+  console.assert(
+    memberships.every((plan) => Array.isArray(plan.details) && plan.details.length >= 5),
+    "Each membership plan should include at least 5 details."
+  );
+  console.assert(
+    memberships.some((plan) => plan.featured === true),
+    "One membership plan should be featured."
+  );
+  console.assert(
+    merch.every((item) => item.name && item.price && item.image),
+    "Each merch product should include a name, price, and image."
+  );
+  console.assert(
+    programs.every((program) => program.icon && program.title && program.text),
+    "Each program should include an icon, title, and text."
+  );
+}
+
+runDataChecks();
+
+export default function PrestigeFitnessHomepage() {
+  const [checkoutItem, setCheckoutItem] = React.useState(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+
+  // Lock body scroll when mobile menu is open
+  React.useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [mobileMenuOpen]);
+
+  if (checkoutItem) {
+    return (
+      <div className="min-h-screen bg-[#090909] px-4 py-8 text-white pb-safe">
+        <div className="mx-auto max-w-5xl">
+          <button
+            onClick={() => setCheckoutItem(null)}
+            className="mb-6 rounded-full border border-white/15 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:border-red-600 hover:text-red-500 active:scale-95"
+          >
+            ← Back To Site
+          </button>
+
+          <div className="rounded-3xl border border-white/10 bg-[#111] p-6 shadow-[0_0_60px_rgba(185,28,28,.18)] md:p-8">
+            <div className="mb-6 md:mb-0">
+              <p className="text-xs font-black uppercase tracking-[0.35em] text-red-500 md:text-sm">
+                Secure Checkout
+              </p>
+              <h1 className="mt-3 text-3xl font-black uppercase md:text-5xl lg:text-6xl">
+                Complete Your Order
+              </h1>
+              <p className="mt-3 text-sm text-gray-400 md:mt-4 md:text-base">
+                You selected the {checkoutItem.name} plan. Enter your information below to continue to payment.
+              </p>
+
+              <div className="mt-6 rounded-2xl border border-red-600/40 bg-black/40 p-5 md:mt-8 md:p-6">
+                <h2 className="text-xl font-black uppercase md:text-2xl">{checkoutItem.name}</h2>
+                <p className="mt-2 text-4xl font-black text-red-500 md:text-5xl">
+                  {checkoutItem.price}
+                  <span className="text-sm text-gray-400 md:text-base">/mo</span>
+                </p>
+              </div>
+            </div>
+
+            <form className="mt-6 space-y-4 md:mt-8">
+              <input
+                className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                placeholder="Full Name"
+                type="text"
+              />
+              <input
+                className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                placeholder="Email Address"
+                type="email"
+              />
+              <input
+                className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                placeholder="Phone Number"
+                type="tel"
+              />
+              <input
+                className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                placeholder="Card Number"
+                type="text"
+              />
+
+              <div className="grid grid-cols-2 gap-3 md:gap-4">
+                <input
+                  className="rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                  placeholder="MM/YY"
+                  type="text"
+                />
+                <input
+                  className="rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                  placeholder="CVC"
+                  type="text"
+                />
+              </div>
+
+              <button
+                type="button"
+                className="mt-2 w-full rounded-full bg-red-700 px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_35px_rgba(220,38,38,.55)] transition hover:scale-[1.02] hover:bg-red-600 active:scale-[0.98] md:px-8 md:py-4 md:text-base"
+              >
+                Continue To Payment
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#090909] text-white">
+      {/* MOBILE MENU OVERLAY */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+
+            {/* Mobile Menu Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
+              className="fixed right-0 top-0 z-[70] flex h-full w-[280px] flex-col bg-[#111] p-6 pt-20 shadow-2xl"
+            >
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="absolute right-4 top-4 rounded-full border border-white/20 p-2 transition hover:border-red-600 hover:text-red-500"
+              >
+                <X className="h-6 w-6" />
+              </button>
+
+              <nav className="flex flex-col gap-1">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="rounded-xl px-4 py-4 text-lg font-semibold text-gray-300 transition hover:bg-white/5 hover:text-white active:bg-white/10"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+
+              <div className="mt-auto">
+                <button
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setCheckoutItem(memberships[1]);
+                  }}
+                  className="w-full rounded-full bg-red-600 px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.35)] transition hover:bg-red-500 active:scale-[0.98]"
+                >
+                  Join Now
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* NAVIGATION */}
+      <nav className="fixed top-0 left-0 right-0 z-50 px-3 pt-3 md:top-5 md:px-6 md:pt-0">
+        <div className="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-white/10 bg-black/70 px-3 py-2.5 shadow-[0_0_35px_rgba(0,0,0,.45)] backdrop-blur-2xl md:px-6 md:py-3">
+          <div className="flex items-center gap-2.5 md:gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border border-red-600/60 bg-black shadow-[0_0_20px_rgba(220,38,38,.35)] md:h-11 md:w-11">
+              <span className="text-xs font-black tracking-tight text-white md:text-sm">
+                <span className="text-red-600">P</span>F
+              </span>
+            </div>
+
+            <div className="leading-none">
+              <p className="text-xs font-black uppercase tracking-[0.38em] text-white md:text-sm">
+                Prestige
+              </p>
+              <p className="mt-0.5 text-[9px] font-bold uppercase tracking-[0.55em] text-red-500 md:mt-1 md:text-[10px]">
+                Fitness
+              </p>
+            </div>
+          </div>
+
+          {/* Desktop Nav Links */}
+          <div className="hidden items-center gap-8 rounded-full border border-white/5 bg-white/[0.03] px-6 py-2.5 text-xs font-medium text-gray-300 lg:flex lg:text-sm">
+            {navLinks.map((link) => (
+              <a key={link.label} href={link.href} className="transition hover:text-white">
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Desktop Join Button */}
+          <button
+            onClick={() => setCheckoutItem(memberships[1])}
+            className="hidden rounded-full border border-red-500/30 bg-red-600 px-4 py-2 text-xs font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.35)] transition hover:scale-105 hover:bg-red-500 md:px-5 md:py-2.5 md:text-sm lg:block"
+          >
+            Join Now
+          </button>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="flex items-center justify-center rounded-full border border-white/20 p-2 transition hover:border-red-600 hover:text-red-500 md:hidden"
+          >
+            <Menu className="h-5 w-5" />
+          </button>
+        </div>
+      </nav>
+
+      {/* HERO SECTION */}
+      <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-32 pt-24 md:min-h-screen md:pb-28 md:pt-20 lg:px-6">
+        <div
+          className="absolute inset-0 animate-[slowZoom_18s_ease-in-out_infinite] bg-cover bg-center"
+          style={{
+            backgroundImage: "url('https://i.imgur.com/9xJbf8m.jpg')",
+          }}
+        />
+
+        {/* HERO LIGHT FLARE */}
+        <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+          <div className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 animate-[heroGlow_6s_ease-in-out_infinite] rounded-full bg-white/12 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]" />
+          <div className="absolute left-1/2 top-0 h-full w-[150px] -translate-x-1/2 bg-gradient-to-b from-white/18 via-white/6 to-transparent opacity-70 blur-3xl md:w-[220px]" />
+          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 animate-pulse rounded-full bg-white/25 blur-3xl md:h-44 md:w-44" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,.08),transparent_55%)]" />
+        </div>
+
+        {/* HERO CTA CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          className="absolute bottom-6 left-1/2 z-30 flex w-full max-w-lg -translate-x-1/2 justify-center px-4 sm:max-w-xl md:bottom-8 md:max-w-6xl md:px-6"
+        >
+          <div className="flex flex-col items-center text-center">
+            <h1 className="max-w-xs text-3xl font-black uppercase leading-none text-white drop-shadow-2xl sm:max-w-lg sm:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl">
+              Built <span className="text-red-600">Different</span>
+            </h1>
+
+            <p className="mt-2 text-[10px] font-black uppercase tracking-[0.35em] text-red-500 sm:mt-3 sm:text-xs md:mt-4 md:text-sm lg:text-base">
+              Elite Performance Club
+            </p>
+
+            <p className="mt-3 max-w-[280px] rounded-2xl bg-black/50 px-4 py-2.5 text-xs leading-relaxed text-gray-100 shadow-[0_0_35px_rgba(0,0,0,.55)] backdrop-blur-md sm:max-w-lg sm:text-sm md:mt-5 md:max-w-xl md:px-5 md:py-3 md:text-lg lg:max-w-2xl lg:text-xl">
+              Luxury strength training, elite coaching, and a premium atmosphere designed for serious results.
+            </p>
+
+            <div className="mt-4 flex flex-col gap-2.5 sm:flex-row md:mt-6 md:gap-3">
+              <button
+                onClick={() => setCheckoutItem(memberships[1])}
+                className="rounded-full bg-red-700 px-6 py-3 text-xs font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.55)] transition duration-300 hover:scale-105 hover:bg-red-600 hover:shadow-[0_0_45px_rgba(220,38,38,.85)] active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4"
+              >
+                Join Now
+              </button>
+
+              <button className="rounded-full border border-white/20 bg-black/50 px-6 py-3 text-xs font-bold uppercase tracking-wide text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-red-600 hover:bg-red-600/10 active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4">
+                Book A Tour
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        <style>{`
+          @keyframes slowZoom {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+          }
+
+          @keyframes heroGlow {
+            0% {
+              opacity: 0.65;
+              transform: translateX(-50%) scale(1);
+            }
+
+            50% {
+              opacity: 1;
+              transform: translateX(-50%) scale(1.08);
+            }
+
+            100% {
+              opacity: 0.65;
+              transform: translateX(-50%) scale(1);
+            }
+          }
+        `}</style>
+      </section>
+
+      {/* STATS BAR */}
+      <section className="relative z-10 border-y border-white/10 bg-[#111] px-4 py-6 md:px-6 md:py-8">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 text-center sm:grid-cols-4">
+          {[
+            "24/7 Access",
+            "Elite Trainers",
+            "Recovery Zone",
+            "Premium Equipment",
+          ].map((item) => (
+            <div
+              key={item}
+              className="rounded-xl border border-white/10 bg-black/40 p-4 md:rounded-2xl md:p-5"
+            >
+              <p className="text-base font-black text-white md:text-xl">{item}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PROGRAMS SECTION */}
+      <section id="programs" className="px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 flex flex-col justify-between gap-3 md:mb-12 md:flex-row md:items-end">
+            <div>
+              <p className="text-xs font-black tracking-[0.35em] text-red-500 md:text-sm">PROGRAMS</p>
+              <h2 className="mt-2 text-2xl font-black uppercase md:mt-3 md:text-4xl lg:text-5xl xl:text-6xl">
+                Built For Results
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm text-gray-400 md:text-base">
+              From strength training to high-intensity conditioning, Prestige Fitness is designed to make every session feel focused, elevated, and powerful.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3 md:gap-6">
+            {programs.map((program) => (
+              <div
+                key={program.title}
+                className="group rounded-2xl border border-white/10 bg-[#151515] p-6 transition hover:-translate-y-1 hover:border-red-600 hover:shadow-[0_0_45px_rgba(185,28,28,.25)] md:rounded-[2rem] md:p-8"
+              >
+                <program.icon className="mb-5 h-10 w-10 text-red-600 md:mb-8 md:h-12 md:w-12" />
+                <h3 className="text-xl font-black uppercase md:text-2xl">{program.title}</h3>
+                <p className="mt-3 text-sm text-gray-400 md:mt-4">{program.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* EXPERIENCE SECTION */}
+      <section className="bg-[#111] px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-2 md:items-center lg:gap-12">
+          <div className="relative min-h-[320px] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-red-900/40 via-black to-gray-900 p-6 md:min-h-[420px] md:rounded-[2rem] md:p-8">
+            <div className="absolute inset-0 bg-red-900/10 opacity-20" />
+            <div className="relative z-10 flex h-full flex-col justify-end">
+              <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full border-4 border-red-600 bg-black shadow-[0_0_45px_rgba(220,38,38,.6)] md:mb-8 md:h-28 md:w-28">
+                <span className="text-3xl font-black italic md:text-5xl">
+                  <span className="text-red-600">P</span>F
+                </span>
+              </div>
+              <h3 className="text-2xl font-black uppercase md:text-4xl">Luxury Energy. Hardcore Training.</h3>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-black tracking-[0.35em] text-red-500 md:text-sm">THE EXPERIENCE</p>
+            <h2 className="mt-2 text-2xl font-black uppercase md:mt-3 md:text-4xl lg:text-5xl xl:text-6xl">
+              Not Your Average Gym
+            </h2>
+            <p className="mt-4 text-sm text-gray-300 md:mt-6 md:text-base lg:text-lg">
+              Prestige Fitness combines serious training equipment, cinematic atmosphere, premium coaching, and a members-only feel. The website should make people feel the energy before they even walk in.
+            </p>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 md:mt-8">
+              <div className="rounded-xl border border-white/10 bg-black/40 p-4 md:rounded-2xl md:p-5">
+                <Timer className="mb-2 h-5 w-5 text-red-500 md:mb-3" />
+                <p className="text-sm font-medium md:text-base">Fast check-in experience</p>
+              </div>
+              <div className="rounded-xl border border-white/10 bg-black/40 p-4 md:rounded-2xl md:p-5">
+                <Users className="mb-2 h-5 w-5 text-red-500 md:mb-3" />
+                <p className="text-sm font-medium md:text-base">Community-driven culture</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* MEMBERSHIP SECTION */}
+      <section id="membership" className="px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-xs font-black tracking-[0.35em] text-red-500 md:text-sm">MEMBERSHIP</p>
+          <h2 className="mt-2 text-2xl font-black uppercase md:mt-3 md:text-4xl lg:text-5xl xl:text-6xl">
+            Choose Your Level
+          </h2>
+
+          <div className="mt-8 grid gap-4 md:mt-12 md:grid-cols-3 md:gap-6">
+            {memberships.map((plan) => (
+              <div
+                key={plan.name}
+                className={`rounded-2xl border p-6 text-left md:rounded-[2rem] md:p-8 ${
+                  plan.featured
+                    ? "border-red-600 bg-red-950/30 shadow-[0_0_45px_rgba(185,28,28,.35)]"
+                    : "border-white/10 bg-[#151515]"
+                }`}
+              >
+                {plan.featured && (
+                  <p className="mb-3 inline-block rounded-full bg-red-700 px-3 py-1 text-[10px] font-bold uppercase md:mb-4 md:text-xs">
+                    Most Popular
+                  </p>
+                )}
+                <h3 className="text-xl font-black uppercase md:text-2xl">{plan.name}</h3>
+                <p className="mt-4 text-4xl font-black md:text-5xl">
+                  {plan.price}
+                  <span className="text-sm text-gray-400 md:text-base">/mo</span>
+                </p>
+                <ul className="mt-4 space-y-2 text-sm text-gray-300 md:mt-5 md:text-base">
+                  {plan.details.map((detail) => (
+                    <li key={detail} className="flex items-center gap-2.5">
+                      <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-red-600" />
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  onClick={() => setCheckoutItem(plan)}
+                  className="mt-6 w-full rounded-full border border-white/15 px-5 py-3.5 text-sm font-bold uppercase transition hover:border-red-600 hover:bg-red-700 active:scale-[0.98] md:mt-8 md:px-6 md:py-4"
+                >
+                  Select Plan
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* MERCH SECTION */}
+      <section className="bg-[#111] px-4 py-16 md:px-6 md:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-8 text-center md:mb-14">
+            <p className="text-xs font-black tracking-[0.35em] text-red-500 md:text-sm">PRESTIGE MERCH</p>
+            <h2 className="mt-2 text-2xl font-black uppercase md:mt-3 md:text-4xl lg:text-5xl xl:text-6xl">
+              Train In Style
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-sm text-gray-400 md:mt-5 md:text-base lg:text-lg">
+              Premium apparel and accessories built for the Prestige lifestyle.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {merch.map((item) => (
+              <div
+                key={item.name}
+                className="group overflow-hidden rounded-2xl border border-white/10 bg-[#151515] transition duration-300 hover:-translate-y-1 hover:border-red-600 hover:shadow-[0_0_45px_rgba(185,28,28,.25)]"
+              >
+                <div className="relative overflow-hidden">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="h-[280px] w-full object-cover transition duration-500 group-hover:scale-110 md:h-[380px]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/10 to-transparent" />
+                </div>
+
+                <div className="p-5 md:p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-lg font-black uppercase text-white md:text-xl lg:text-2xl">{item.name}</h3>
+                    <p className="text-lg font-black text-red-500 md:text-xl">{item.price}</p>
+                  </div>
+
+                  <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-red-700 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.45)] transition duration-300 hover:scale-[1.02] hover:bg-red-600 active:scale-[0.98] md:mt-6 md:px-6 md:py-3.5">
+                    <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+                    Add To Cart
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA SECTION */}
+      <section className="relative px-4 py-16 text-center md:px-6 md:py-24">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(185,28,28,.35),transparent_45%)]" />
+        <div className="relative z-10 mx-auto max-w-4xl">
+          <div className="mb-4 flex justify-center gap-0.5 text-red-500 md:mb-6 md:gap-1">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <Star key={i} fill="currentColor" className="h-4 w-4 md:h-5 md:w-5" />
+            ))}
+          </div>
+          <h2 className="text-2xl font-black uppercase md:text-4xl lg:text-5xl xl:text-6xl">
+            Your Transformation Starts Now.
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm text-gray-300 md:mt-6 md:text-base lg:text-lg">
+            Book a tour, meet the team, and step into a gym designed to make you train harder, look better, and move with confidence.
+          </p>
+          <button className="mt-8 rounded-full bg-white px-7 py-3.5 text-sm font-bold uppercase text-black transition hover:bg-red-600 hover:text-white active:scale-[0.98] md:mt-10 md:px-9 md:py-4 md:text-base">
+            Claim Free Tour
+          </button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/10 bg-black px-4 py-8 md:px-6 md:py-10">
+        <div className="mx-auto flex max-w-7xl flex-col justify-between gap-4 md:flex-row md:items-center">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-red-600 bg-black md:h-11 md:w-11">
+              <span className="text-xs font-black md:text-sm">
+                <span className="text-red-600">P</span>F
+              </span>
+            </div>
+            <p className="text-xs font-black tracking-[0.2em] md:text-sm md:tracking-[0.25em]">PRESTIGE FITNESS</p>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-gray-400 md:text-sm">
+            <MapPin className="h-3.5 w-3.5 shrink-0 text-red-500 md:h-4 md:w-4" />
+            <span>Premium Fitness Facility '95 New Jersey</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+Hello
+}
