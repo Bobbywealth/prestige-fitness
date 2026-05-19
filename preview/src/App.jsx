@@ -1,5 +1,6 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import {
   Dumbbell,
   Flame,
@@ -14,6 +15,7 @@ import {
   Heart,
   Brain,
   Droplets,
+  ArrowLeft,
 } from "lucide-react";
 
 const programs = [
@@ -108,7 +110,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Programs", href: "#programs" },
   { label: "Membership", href: "#membership" },
-  { label: "Trainers", href: "#" },
+  { label: "Personal Training", href: "/personal-training" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -133,26 +135,34 @@ export default function PrestigeFitnessHomepage() {
         <div className="mx-auto max-w-5xl">
           <button
             onClick={() => setCheckoutItem(null)}
-            className="mb-6 rounded-full border border-white/15 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:border-red-600 hover:text-red-500 active:scale-95"
+            className="mb-6 flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-bold uppercase tracking-wide text-white transition hover:border-red-600 hover:text-red-500 active:scale-95"
           >
-            ← Back To Site
+            <ArrowLeft className="h-4 w-4" /> Back To Site
           </button>
 
           <div className="rounded-3xl border border-white/10 bg-[#3d3d3d] p-6 shadow-[0_0_60px_rgba(185,28,28,.18)] md:p-8">
             <div className="mb-6 md:mb-0">
               <p className="text-xs font-black uppercase tracking-[0.35em] text-red-500 md:text-sm">
-                Secure Checkout
+                Gym Membership Checkout
               </p>
               <h1 className="mt-3 text-3xl font-black uppercase md:text-5xl lg:text-6xl">
-                Complete Your Order
+                Join Prestige Fitness
               </h1>
               <p className="mt-3 text-sm text-gray-400 md:mt-4 md:text-base">
-                You selected the {checkoutItem.name} plan. Enter your information below to continue to payment.
+                You selected the <span className="text-white font-bold">{checkoutItem.name}</span> membership plan. Enter your information below to complete your gym membership.
               </p>
 
               <div className="mt-6 rounded-2xl border border-red-600/40 bg-black/40 p-5 md:mt-8 md:p-6">
-                <h2 className="text-xl font-black uppercase md:text-2xl">{checkoutItem.name}</h2>
-                <p className="mt-2 text-4xl font-black text-red-500 md:text-5xl">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-600/20">
+                    <Dumbbell className="h-6 w-6 text-red-500" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black uppercase md:text-2xl">{checkoutItem.name}</h2>
+                    <p className="text-sm text-gray-400">Gym Membership</p>
+                  </div>
+                </div>
+                <p className="text-4xl font-black text-red-500 md:text-5xl">
                   {checkoutItem.price}
                   <span className="text-sm text-gray-400 md:text-base">/mo</span>
                 </p>
@@ -177,6 +187,11 @@ export default function PrestigeFitnessHomepage() {
               />
               <input
                 className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
+                placeholder="Emergency Contact Name"
+                type="text"
+              />
+              <input
+                className="w-full rounded-xl border border-white/10 bg-black/50 px-4 py-3.5 text-base outline-none transition focus:border-red-600 md:rounded-2xl md:px-5 md:py-4"
                 placeholder="Card Number"
                 type="text"
               />
@@ -198,9 +213,18 @@ export default function PrestigeFitnessHomepage() {
                 type="button"
                 className="mt-2 w-full rounded-full bg-red-700 px-6 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_35px_rgba(220,38,38,.55)] transition hover:scale-[1.02] hover:bg-red-600 active:scale-[0.98] md:px-8 md:py-4 md:text-base"
               >
-                Continue To Payment
+                Complete Gym Membership
               </button>
             </form>
+
+            <div className="mt-6 rounded-xl border border-white/10 bg-black/30 p-4">
+              <p className="text-sm text-gray-400 text-center">
+                Interested in personal training instead?{' '}
+                <Link to="/personal-training" className="text-red-500 font-bold hover:text-red-400">
+                  View Personal Training Plans →
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -316,9 +340,9 @@ export default function PrestigeFitnessHomepage() {
         />
 
         <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/15 to-transparent" />
-          <div className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 animate-[heroGlow_6s_ease-in-out_infinite] rounded-full bg-white/15 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]" />
-          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 animate-pulse rounded-full bg-white/20 blur-3xl md:h-44 md:w-44" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
+          <div className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 animate-[heroGlow_6s_ease-in-out_infinite] rounded-full bg-white/10 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]" />
+          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 animate-pulse rounded-full bg-white/15 blur-3xl md:h-44 md:w-44" />
         </div>
 
         <motion.div
@@ -328,27 +352,27 @@ export default function PrestigeFitnessHomepage() {
           className="absolute bottom-6 left-1/2 z-30 flex w-full max-w-lg -translate-x-1/2 justify-center px-4 sm:max-w-xl md:bottom-8 md:max-w-6xl md:px-6"
         >
           <div className="flex flex-col items-center text-center">
-            <h1 className="max-w-xs text-3xl font-black uppercase leading-none text-white drop-shadow-2xl sm:max-w-lg sm:text-4xl md:max-w-5xl md:text-5xl lg:text-6xl">
+            <h1 className="max-w-xs text-4xl font-black uppercase leading-tight text-white drop-shadow-2xl sm:max-w-lg sm:text-5xl md:max-w-5xl md:text-5xl lg:text-6xl">
               Built <span className="text-red-600">Different</span>
             </h1>
 
-            <p className="mt-2 text-[10px] font-black uppercase tracking-[0.35em] text-red-500 sm:mt-3 sm:text-xs md:mt-4 md:text-sm lg:text-base">
+            <p className="mt-3 text-sm font-black uppercase tracking-[0.35em] text-red-500 sm:mt-3 sm:text-sm md:mt-4 md:text-sm lg:text-base">
               Elite Performance Club
             </p>
 
-            <p className="mt-3 max-w-[280px] rounded-2xl bg-black/50 px-4 py-2.5 text-xs leading-relaxed text-gray-100 shadow-[0_0_35px_rgba(0,0,0,.55)] backdrop-blur-md sm:max-w-lg sm:text-sm md:mt-5 md:max-w-xl md:px-5 md:py-3 md:text-lg lg:max-w-2xl lg:text-xl">
+            <p className="mt-4 max-w-[320px] rounded-2xl bg-black/50 px-5 py-3 text-sm leading-relaxed text-gray-100 shadow-[0_0_35px_rgba(0,0,0,.55)] backdrop-blur-md sm:max-w-lg sm:text-base md:mt-5 md:max-w-xl md:px-5 md:py-3 md:text-lg lg:max-w-2xl lg:text-xl">
               Luxury strength training, elite coaching, and a premium atmosphere designed for serious results.
             </p>
 
             <div className="mt-4 flex flex-col gap-3 sm:flex-row md:mt-6 md:gap-3">
               <button
                 onClick={() => setCheckoutItem(memberships[1])}
-                className="rounded-full bg-red-700 px-8 py-4 text-sm font-bold uppercase tracking-wide text-white shadow-[0_0_30px_rgba(220,38,38,.55)] transition duration-300 hover:scale-105 hover:bg-red-600 hover:shadow-[0_0_45px_rgba(220,38,38,.85)] active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4"
+                className="rounded-full border-2 border-red-600 bg-red-700 px-10 py-5 text-base font-bold uppercase tracking-wide text-white shadow-[0_0_35px_rgba(220,38,38,.55)] transition duration-300 hover:scale-105 hover:bg-red-600 hover:shadow-[0_0_50px_rgba(220,38,38,.85)] active:scale-105 md:px-12 md:py-5 md:text-lg lg:px-14 lg:py-6"
               >
                 Join Now
               </button>
 
-              <button className="rounded-full border border-white/20 bg-black/50 px-8 py-4 text-sm font-bold uppercase tracking-wide text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-red-600 hover:bg-red-600/10 active:scale-105 md:px-8 md:py-3.5 md:text-sm lg:px-10 lg:py-4">
+              <button className="rounded-full border-2 border-white/30 bg-black/50 px-10 py-5 text-base font-bold uppercase tracking-wide text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-red-600 hover:bg-red-600/20 active:scale-105 md:px-12 md:py-5 md:text-lg lg:px-14 lg:py-6">
                 Book A Tour
               </button>
             </div>

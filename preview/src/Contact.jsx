@@ -7,7 +7,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Programs", href: "/#programs" },
   { label: "Membership", href: "/#membership" },
-  { label: "Trainers", href: "/" },
+  { label: "Personal Training", href: "/personal-training" },
   { label: "Contact", href: "/contact" },
 ];
 
