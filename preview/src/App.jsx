@@ -63,8 +63,7 @@ const merch = [
   {
     name: "Prestige Gym Bottle",
     price: "$28",
-    image:
-      "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1200&auto=format&fit=crop",
+    image: "https://i.imgur.com/yUtmxdL.jpg",
   },
 ];
 
