@@ -317,6 +317,8 @@ export default function PrestigeFitnessHomepage() {
 
         <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+          <div className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 animate-[heroGlow_6s_ease-in-out_infinite] rounded-full bg-white/10 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]" />
+          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 animate-pulse rounded-full bg-white/15 blur-3xl md:h-44 md:w-44" />
         </div>
 
         <motion.div
