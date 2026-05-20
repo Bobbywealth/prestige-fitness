@@ -1,5 +1,5 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
   Dumbbell,
@@ -109,6 +109,7 @@ const memberships = [
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Programs", href: "#programs" },
+  { label: "Shop", href: "/shop" },
   { label: "Membership", href: "#membership" },
   { label: "Personal Training", href: "/personal-training" },
   { label: "Contact", href: "/contact" },
@@ -117,8 +118,42 @@ const navLinks = [
 export default function PrestigeFitnessHomepage() {
   const [checkoutItem, setCheckoutItem] = React.useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [trailDots, setTrailDots] = useState([]);
+  const [particles, setParticles] = useState([]);
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll();
+  
+  // Parallax values
+  const heroRef = useRef(null);
+  const { scrollYProgress: heroScroll } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"]
+  });
+  const heroY = useTransform(heroScroll, [0, 1], [0, 150]);
+  const heroScale = useTransform(heroScroll, [0, 1], [1, 1.1]);
+  const heroOpacity = useTransform(heroScroll, [0, 0.5], [1, 0]);
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+      setTrailDots(prev => {
+        const newDots = [...prev, { x: e.clientX, y: e.clientY, id: Date.now() }];
+        return newDots.slice(-12);
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTrailDots(prev => prev.map(dot => ({ ...dot, opacity: (dot.opacity || 1) - 0.15 })).filter(dot => dot.opacity > 0));
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -128,6 +163,33 @@ export default function PrestigeFitnessHomepage() {
       document.body.style.overflow = "auto";
     };
   }, [mobileMenuOpen]);
+
+  const createParticles = (e) => {
+    const rect = e.target.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const newParticles = Array.from({ length: 15 }, (_, i) => ({
+      id: Date.now() + i,
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 12,
+      vy: (Math.random() - 0.5) * 12,
+      life: 1,
+    }));
+    setParticles(prev => [...prev, ...newParticles]);
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setParticles(prev => prev.map(p => ({
+        ...p,
+        x: p.x + p.vx,
+        y: p.y + p.vy,
+        life: p.life - 0.04,
+      })).filter(p => p.life > 0));
+    }, 16);
+    return () => clearInterval(interval);
+  }, []);
 
   if (checkoutItem) {
     return (
@@ -232,7 +294,63 @@ export default function PrestigeFitnessHomepage() {
   }
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[#2c2c2c] text-white">
+    <div className="min-h-screen overflow-x-hidden bg-[#2c2c2c] text-white cursor-none md:cursor-none">
+      {/* Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-700 via-red-500 to-red-600 z-[100] origin-left"
+        style={{ scaleX: scrollYProgress }}
+      />
+
+      {/* Custom Cursor Trail */}
+      <div className="pointer-events-none fixed inset-0 z-[99]">
+        {trailDots.map((dot, i) => (
+          <motion.div
+            key={dot.id}
+            className="absolute w-2 h-2 rounded-full bg-red-500"
+            style={{
+              left: dot.x - 4,
+              top: dot.y - 4,
+              opacity: (i / trailDots.length) * 0.6,
+              scale: i / trailDots.length,
+            }}
+            initial={{ opacity: 0.8, scale: 1 }}
+            animate={{ opacity: 0, scale: 0 }}
+            transition={{ duration: 0.5 }}
+          />
+        ))}
+        {/* Main cursor glow */}
+        <motion.div
+          className="absolute w-8 h-8 rounded-full border-2 border-red-500"
+          style={{
+            left: mousePos.x - 16,
+            top: mousePos.y - 16,
+          }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
+        <div
+          className="absolute w-3 h-3 rounded-full bg-red-500 shadow-[0_0_20px_rgba(220,38,38,0.8)]"
+          style={{ left: mousePos.x - 6, top: mousePos.y - 6 }}
+        />
+      </div>
+
+      {/* Particle Container for CTA buttons */}
+      <div className="pointer-events-none fixed inset-0 z-[98] overflow-hidden">
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className="absolute w-2 h-2 rounded-full bg-red-500"
+            style={{
+              left: p.x,
+              top: p.y,
+              opacity: p.life,
+              transform: `scale(${p.life})`,
+              boxShadow: '0 0 10px rgba(220,38,38,0.8)',
+            }}
+          />
+        ))}
+      </div>
+
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -331,25 +449,38 @@ export default function PrestigeFitnessHomepage() {
         </div>
       </nav>
 
-      <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-32 pt-24 md:min-h-screen md:pb-28 md:pt-20 lg:px-6">
-        <div
+      <section ref={heroRef} className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4 pb-36 pt-32 md:min-h-screen md:pb-32 md:pt-24 lg:px-6">
+        <motion.div
           className="absolute inset-0 animate-[slowZoom_18s_ease-in-out_infinite] bg-cover bg-center"
           style={{
             backgroundImage: "url('https://i.imgur.com/9xJbf8m.jpg')",
+            y: heroY,
+            scale: heroScale,
           }}
         />
 
-        <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+        <motion.div 
+          className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+          style={{ opacity: heroOpacity }}
+        >
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/10 to-transparent" />
-          <div className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 animate-[heroGlow_6s_ease-in-out_infinite] rounded-full bg-white/10 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]" />
-          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 animate-pulse rounded-full bg-white/15 blur-3xl md:h-44 md:w-44" />
-        </div>
+          <motion.div 
+            className="absolute left-1/2 top-[8%] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-white/10 blur-[100px] md:h-[500px] md:w-[500px] md:blur-[140px]"
+            animate={{ 
+              y: [0, -20, 0],
+              opacity: [0.65, 1, 0.65],
+            }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            style={{ y: heroY }}
+          />
+          <div className="absolute left-1/2 top-[12%] h-32 w-32 -translate-x-1/2 rounded-full bg-white/15 blur-3xl md:h-44 md:w-44" />
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className="absolute bottom-6 left-1/2 z-30 flex w-full max-w-lg -translate-x-1/2 justify-center px-4 sm:max-w-xl md:bottom-8 md:max-w-6xl md:px-6"
+          className="absolute bottom-8 left-1/2 z-30 flex w-full max-w-lg -translate-x-1/2 justify-center px-4 sm:max-w-xl md:bottom-10 md:max-w-6xl md:px-6"
         >
           <div className="flex flex-col items-center text-center">
             <h1 className="max-w-xs text-4xl font-black uppercase leading-tight text-white drop-shadow-2xl sm:max-w-lg sm:text-5xl md:max-w-5xl md:text-5xl lg:text-6xl">
